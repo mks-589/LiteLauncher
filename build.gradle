@@ -32,7 +32,7 @@ android {
     }
 
     productFlavors {
-        aosp {
+        LiteLauncher {
             applicationId 'com.android.launcher.lite'
             testApplicationId 'com.android.launcher.lite.tests'
         }
@@ -59,12 +59,12 @@ android {
             manifest.srcFile "tests/AndroidManifest-common.xml"
         }
 
-        aosp {
+        LiteLauncher {
             java.srcDirs = ['src_flags']
             manifest.srcFile "AndroidManifest.xml"
         }
 
-        aospAndroidTest {
+        LiteLauncherAndroidTest {
             manifest.srcFile "tests/AndroidManifest.xml"
         }
 

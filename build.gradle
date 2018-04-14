@@ -18,7 +18,7 @@ android {
     buildToolsVersion '27.0.0'
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -33,13 +33,13 @@ android {
 
     productFlavors {
         aosp {
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
+            applicationId 'com.android.launcher.lite'
+            testApplicationId 'com.android.launcher.lite.tests'
         }
 
         l3go {
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
+            applicationId 'com.android.launcher.lite'
+            testApplicationId 'com.android.launcher.lite.tests'
         }
     }
     sourceSets {

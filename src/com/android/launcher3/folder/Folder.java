@@ -151,6 +151,9 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
     public ExtendedEditText mFolderName;
     private PageIndicatorDots mPageIndicator;
 
+    private View mHeader;
+    private int mHeaderHeight;
+
     private View mFooter;
     private int mFooterHeight;
 
@@ -257,6 +260,7 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
                 | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         mFolderName.forceDisableSuggestions(true);
 
+        mHeader = findViewById(R.id.folder_header);
         mFooter = findViewById(R.id.folder_footer);
 
         // We find out how tall footer wants to be (it is set to wrap_content), so that
@@ -264,6 +268,8 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
         int measureSpec = MeasureSpec.UNSPECIFIED;
         mFooter.measure(measureSpec, measureSpec);
         mFooterHeight = mFooter.getMeasuredHeight();
+
+        mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.folder_header_height);
     }
 
     public void onClick(View v) {
@@ -655,7 +661,7 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
         });
 
         // Footer animation
-        if (mContent.getPageCount() > 1 && !mInfo.hasOption(FolderInfo.FLAG_MULTI_PAGE_ANIMATION)) {
+        if (false && mContent.getPageCount() > 1 && !mInfo.hasOption(FolderInfo.FLAG_MULTI_PAGE_ANIMATION)) {
             int footerWidth = mContent.getDesiredWidth()
                     - mFooter.getPaddingLeft() - mFooter.getPaddingRight();
 
@@ -878,7 +884,7 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
 
             if (d.stateAnnouncer != null) {
                 d.stateAnnouncer.announce(getContext().getString(R.string.move_to_position,
-                        mTargetRank + 1));
+                        "" + mTargetRank + 1));
             }
         }
 
@@ -1174,7 +1180,7 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
     private int getContentAreaHeight() {
         DeviceProfile grid = mLauncher.getDeviceProfile();
         int maxContentAreaHeight = grid.availableHeightPx
-                - grid.getTotalWorkspacePadding().y - mFooterHeight;
+                - grid.getTotalWorkspacePadding().y - mFooterHeight - mHeaderHeight;
         int height = Math.min(maxContentAreaHeight,
                 mContent.getDesiredHeight());
         return Math.max(height, MIN_CONTENT_DIMEN);
@@ -1193,7 +1199,13 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
     }
 
     private int getFolderHeight(int contentAreaHeight) {
-        return getPaddingTop() + getPaddingBottom() + contentAreaHeight + mFooterHeight;
+        return getPaddingTop() + getPaddingBottom()
+                + contentAreaHeight + mFooterHeight + mHeaderHeight;
+    }
+
+    private int getFolderHeaderWidth(int contentAreaWidth) {
+        return contentAreaWidth - getResources().getDimensionPixelSize(R.dimen.folder_header_margin_start)
+                - getResources().getDimensionPixelSize(R.dimen.folder_header_margin_end);
     }
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -1214,6 +1226,8 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
                     mContent.getPaddingRight() + cellIconGap,
                     mFooter.getPaddingBottom());
         }
+        mHeader.measure(MeasureSpec.makeMeasureSpec(getFolderHeaderWidth(contentWidth), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(mHeaderHeight, MeasureSpec.EXACTLY));
         mFooter.measure(contentAreaWidthSpec,
                 MeasureSpec.makeMeasureSpec(mFooterHeight, MeasureSpec.EXACTLY));
 

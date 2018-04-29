@@ -150,7 +150,8 @@ public class FolderAnimationManager {
 
         final int paddingOffsetX = (int) ((mFolder.getPaddingLeft() + mContent.getPaddingLeft())
                 * initialScale);
-        final int paddingOffsetY = (int) ((mFolder.getPaddingTop() + mContent.getPaddingTop())
+        final int paddingOffsetY = (int) ((mFolder.getPaddingTop() + mContent.getPaddingTop()
+                + mFolder.getResources().getDimensionPixelSize(R.dimen.folder_header_height))
                 * initialScale);
 
         int initialX = folderIconPos.left + mPreviewBackground.getOffsetX() - paddingOffsetX
